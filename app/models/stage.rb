@@ -20,7 +20,7 @@ class Stage < ActiveRecord::Base
   
   EMAIL_BASE_REGEX = '([^@\s\,\<\>\?\&\;\:]+)@((?:[\-a-z0-9]+\.)+[a-z]{2,})'
   EMAIL_REGEX = /^#{EMAIL_BASE_REGEX}$/i
-    
+
   def validate
     unless self.alert_emails.blank?
       self.alert_emails.split(" ").each do |email|

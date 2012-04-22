@@ -1,0 +1,18 @@
+<% if @recipe.dependencies.empty? %>
+  <br/>
+    No dependencies.<br />
+  <br/>
+<% else %>
+  <table class="sortable">
+    <tr>
+      <th width="40%">Name</th>
+      <th width="60%">Description</th>
+    </tr>
+    <% for recipe in @recipe.dependencies %>
+      <tr class="<%= cycle :even, :odd, :name => 'recipes'  %>">
+        <td><%= link_to h(recipe.name), recipe_path(recipe) %></td>
+        <td><%=h recipe.description %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

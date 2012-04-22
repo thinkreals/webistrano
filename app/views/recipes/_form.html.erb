@@ -1,4 +1,39 @@
 <% flashed_errors(:recipe) %>
+
+<fieldset class="fieldset">
+  <legend>Recipes to depend on</legend>
+  
+  <%
+    cond = {}
+    cond = {:conditions => ["id != ?", @recipe.id]} if @recipe.id 
+    cond.merge! :order => 'name ASC'
+    other_recipes = Recipe.find(:all, cond)
+  %>
+  <% if other_recipes.length > 0 %>
+  
+    <table class="sortable">
+      <tr>
+        <th width="1%">Use</th>
+        <th width="39%">Name</th>
+        <th width="60%">Description</th>
+      </tr>
+      <% for recipe in other_recipes %>
+        <% next if recipe.id == @recipe.id %>
+        <tr class="<%= cycle :even, :odd, :name => 'recipes'  %>">
+          <td><input type="checkbox" value="<%=h recipe.id %>" name="dependencies[]" id="dependencies_<%=h recipe.id %>" <%= @recipe.depend_on?(recipe) ? 'checked="checked"' : '' %>/></td>
+          <td><%= link_to h(recipe.name), recipe_path(recipe) %></td>
+          <td><%=h recipe.description %></td>
+        </tr>
+      <% end %>
+    </table>
+    
+  <% else %>
+   No recipes present<br /><br />
+  <% end %>
+
+</fieldset> 
+
+<br />
 <p>
   <b>Name</b><br />
   <%= text_field 'recipe', 'name', :style =>'width:300px; ' %>
@@ -7,7 +42,7 @@
 <p>
   <b>Description</b><br />
   <%= text_area 'recipe', 'description', :style =>'width:663px; height: 100px;' %>
-</p>
+</p>  
 
 <p>
   <b>Body</b><br />

@@ -163,6 +163,10 @@ module Webistrano
     # load custom project recipes
     def load_stage_custom_recipes(config)
       begin
+        Recipe.all_dependencies(deployment.stage.recipes).each do |recipe|
+          logger.info("loadding dependent recipe '#{recipe.name}' ")
+          config.load(:string => recipe.body)
+        end
         deployment.stage.recipes.ordered.each do |recipe|
           logger.info("loading stage recipe '#{recipe.name}' ")
           config.load(:string => recipe.body)

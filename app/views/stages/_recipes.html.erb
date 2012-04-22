@@ -15,5 +15,16 @@
         <td><%=h recipe.description %></td>
       </tr>
     <% end %>
+    <tr>
+      <th>Depends on</th>
+      <th>Description</th>
+    </tr>
+    <% reset_cycle("recipes") %>
+    <% for recipe in Recipe.all_dependencies(@stage.recipes) %>
+      <tr class="<%= cycle :even, :odd, :name => 'recipes' %>">
+        <td><%= link_to h(recipe.name), recipe_path(recipe) %></td>
+        <td><%=h recipe.description %></td>
+      </tr>
+    <% end %>
   </table>
 <% end %>

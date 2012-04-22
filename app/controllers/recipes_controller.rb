@@ -40,6 +40,7 @@ class RecipesController < ApplicationController
 
     respond_to do |format|
       if @recipe.save
+        @recipe.dependencies = (params[:dependencies] || []).collect{|r_id| Recipe.find(r_id.to_i)}
         flash[:notice] = 'Recipe was successfully created.'
         format.html { redirect_to recipe_url(@recipe) }
         format.xml  { head :created, :location => recipe_url(@recipe) }
@@ -54,6 +55,7 @@ class RecipesController < ApplicationController
   # PUT /recipes/1.xml
   def update
     @recipe = Recipe.find(params[:id])
+    @recipe.dependencies = (params[:dependencies] || []).collect{|r_id| Recipe.find(r_id.to_i)}
 
     respond_to do |format|
       if @recipe.update_attributes((params[:recipe] || {}).merge(:user_id => current_user.id))

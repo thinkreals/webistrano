@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110512144542) do
+ActiveRecord::Schema.define(:version => 20120422050055) do
 
   create_table "configuration_parameters", :force => true do |t|
     t.string   "name"
@@ -61,6 +61,16 @@ ActiveRecord::Schema.define(:version => 20110512144542) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "recipe_dependencies", :force => true do |t|
+    t.integer  "recipe_id"
+    t.integer  "dependency_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "recipe_dependencies", ["dependency_id"], :name => "index_recipe_dependencies_on_dependency_id"
+  add_index "recipe_dependencies", ["recipe_id"], :name => "index_recipe_dependencies_on_recipe_id"
 
   create_table "recipe_versions", :force => true do |t|
     t.integer  "recipe_id"
