@@ -11,6 +11,7 @@ gem "open4", "0.9.3"
 gem "exception_notification", "2.3.3.0"
 gem "unicorn", "~>4.2.1"
 gem "rvm-capistrano", "~>1.1.0"
+gem "capistrano-unicorn", "~>0.1.6"
 
 group :test do
   gem "mocha", "0.9.8"
