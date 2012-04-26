@@ -1,4 +1,4 @@
-<% if @recipe.stages.empty? %>
+<% if @recipe.all_stages.empty? %>
 <br/>
     No stages are using this recipe.
 <br/>
@@ -8,7 +8,7 @@
       <th width="50%">Project</th>
       <th width="50%">Stage</th>
     </tr>
-  <% for stage in @recipe.stages %>
+  <% for stage in @recipe.all_stages %>
     <tr class="<%= cycle :even, :odd, :name => 'stages' %>">
       <td><%= link_to h(stage.project.name), project_path(stage.project) %></td>
       <td><%= link_to h(stage.name), project_stage_path(stage.project, stage) %></td>

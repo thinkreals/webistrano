@@ -23,6 +23,14 @@ class Recipe < ActiveRecord::Base
     @all_dependencies ||= self.class.all_dependencies(self)
   end
 
+  def all_inverse_dependencies
+    @all_inverse_dependencies ||= self.class.all_inverse_dependencies(self)
+  end
+
+  def all_stages
+    @all_stages ||= self.stages + self.all_inverse_dependencies.collect{|r| r.stages}.flatten
+  end
+
   def depend_on?(recipe)
     self.all_dependencies.include?(recipe)
   end
@@ -48,9 +56,11 @@ class Recipe < ActiveRecord::Base
   end
  
   class << self
-    def all_recipes(recipes, deep_recipes = nil)
-      deep_recipes = recipes if deep_recipes.nil?
-      d = deep_recipes.collect{ |r| r.dependencies }.flatten.uniq
+    def all_recipes(recipes, inverse = false, recipe_bucket = nil)
+      recipe_bucket = recipes if recipe_bucket.nil?
+      d = recipe_bucket.collect{ |r|
+        inverse ? r.inverse_dependencies : r.dependencies
+      }.flatten.uniq
       d = d - recipes
       return recipes if d.empty?
       recipes += d
@@ -60,6 +70,11 @@ class Recipe < ActiveRecord::Base
     def all_dependencies(*recipes)
       recipes = recipes[0] if recipes[0].is_a? Array
       self.all_recipes(recipes) - recipes
+    end
+
+    def all_inverse_dependencies(*recipes)
+      recipes = recipes[0] if recipes[0].is_a? Array
+      self.all_recipes(recipes, true) - recipes
     end
   end
 end
