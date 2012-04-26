@@ -64,7 +64,7 @@ class Recipe < ActiveRecord::Base
       d = d - recipes
       return recipes if d.empty?
       recipes += d
-      return all_recipes(recipes, d)
+      return all_recipes(recipes, inverse, d)
     end
 
     def all_dependencies(*recipes)
